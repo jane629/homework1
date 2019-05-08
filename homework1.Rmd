@@ -63,8 +63,9 @@ sumEcon
 ### 1.3
 善用logical class遇到數學計算會形成1與0的數值之特質，計算經濟系學生在該科的平均成績（即經濟系學生在該科成績加總除以經濟系學生數），存成答案物件meanEcon。
 ```{r ans13}
-meanEcon <- sum(grade/4)
+meanEcon <- sum(grade*fromEcom)/sum(fromEcom)
 meanEcon
+
 ```
  
 ## 2
@@ -98,6 +99,10 @@ twTime
 hour(twTime)
 nightowl <- hour(twTime) == c(1:6)
 nightowl
+
+hour_twTime <- hour(twTime)
+nightOwl1 <- hour_twTime >=1 & hour_twTime<=6
+nightOwl1
 ```
 
 ### 2.4
@@ -105,8 +110,11 @@ nightowl
 ```{r ans24}
 length(twTime)
 sum(nightowl)
-nightowlvoteShare <- sum(nightowl)/length(twTime)
+nightowlvoteShare <- sum(nightowl)/length(nightowl)
 nightowlvoteShare
+
+nightOwlVoteShare1 <- sum(nightOwl1)/length(nightOwl1)
+nightOwlVoteShare1
 ```
 
 ## 3
@@ -126,22 +134,34 @@ studentID, schoolYear, grade, credit的每一個元素位置其值分別代表�
 對每一科，只有及格才表示有拿到學分，請創造一個integer class物件名為earnedCredit, 其值為0若沒拿到該科學分，其值為對應credit位置的學分數若有拿到該科學分。
 （舉例： 若credit為c(2,3,2), 而對應grade為c(55,70,88), 則earnedCredit為c(0,3,2)）此題答案物件為earnedCredit （注意class也要對）
 ```{r ans31}
-earnedCredit <- 
+earnedCredit <- (grade >= 60)*credit
+earnedCredit <- as.integer(earnedCredit)
+earnedCredit
 ```
 
 ### 3.2
 請問學號為046S6f645的學生在100學年修習了多少學分? 答案請存在答案物件credit100ChosenStudent。
 ```{r ans32}
+ischosenStudent <- studentID == "046S6f645"
+
+credit100ChosenStudent <- sum((ischosenStudent & schoolYear == 100)*credit)
+credit100ChosenStudent
 ```
 
 ### 3.3
 請問學號為046S6f645的學生在100學年實得了多少學分？答案請存在物件earnedCredit100ChosenStudent。
 ```{r ans33}
+earnedCredit100ChosenStudent <- sum((ischosenStudent & schoolYear == 100)*earnedCredit)
+earnedCredit100ChosenStudent
 ```
 
 ### 3.4
 請問學號為046S6f645的學生在100學年的學年平均成績為多少？（存在答案物件gpa100ChosenStudent）(即為該生該學年所有**學分數大於0**的各科學期成績**分別乘上各科學分數**加總後，除以其該學年總學分數) (hint: 建議先創一個可以代表元素是否來自**該學號**，且**100學年**，且**學分數>0**的logical class物件，用它來選出所要的成績或學分進行必要相乘或加總)
 ```{r ans34}
+subject <- (ischosenStudent & schoolYear==100 & credit >0)
+
+gpa100ChosenStudent <- sum(subject*grade*credit)/sum(subject*credit)
+gpa100ChosenStudent
 ```
 
 > 答案後，請確認每個code chunk的最後一行皆為該題的答案物件。
